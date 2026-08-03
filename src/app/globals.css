@@ -1,0 +1,144 @@
+:root {
+  --background: #050505;
+  --foreground: #f4f4f5;
+  
+  --brand-blue: #3b82f6;
+  --brand-dark-blue: #1e3a8a;
+  
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+html,
+body {
+  max-width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Background grid pattern */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+/* Abstract blurred orbs for premium feel */
+body::after {
+  content: "";
+  position: fixed;
+  top: -10%;
+  left: -20%;
+  width: 70vw;
+  height: 70vw;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+  filter: blur(120px);
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Bottom Gradient Flow */
+/* Bottom Gradient Flow */
+/* Container to hold the gradient flow */
+.glow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  /* Removed background-color to preserve the existing grid pattern underneath */
+}
+/* Base class for the flowing orbs */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.75;
+  animation: waveFlow 25s infinite alternate ease-in-out, colorShift 12s infinite alternate ease-in-out;
+}
+/* Orb 1: Bright Blue */
+.orb-1 {
+  width: 120vw;
+  height: 40vh;
+  background: #3b82f6;
+  bottom: -20vh;
+  left: -20vw;
+  animation-duration: 25s, 8s;
+}
+/* Orb 2: Deep Blue */
+.orb-2 {
+  width: 100vw;
+  height: 45vh;
+  background: #1e3a8a;
+  bottom: -25vh;
+  right: -10vw;
+  animation-duration: 20s, 10s;
+  animation-delay: -5s, -2s;
+}
+/* Orb 3: Light Blue */
+.orb-3 {
+  width: 90vw;
+  height: 35vh;
+  background: #93c5fd;
+  bottom: -15vh;
+  left: 10vw;
+  animation-duration: 30s, 12s;
+  animation-delay: -15s, -7s;
+}
+/* Movement Animation: Moves and stretches the orbs organically */
+@keyframes waveFlow {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(15vw, -15vh) scale(1.1) rotate(10deg);
+  }
+  50% {
+    transform: translate(-10vw, -30vh) scale(0.9) rotate(-15deg);
+  }
+  75% {
+    transform: translate(-25vw, -10vh) scale(1.15) rotate(-5deg);
+  }
+  100% {
+    transform: translate(10vw, -20vh) scale(1.05) rotate(15deg);
+  }
+}
+/* Color Animation: Applies a massive blur and pulses the brightness/hue */
+@keyframes colorShift {
+  0% {
+    filter: blur(100px) hue-rotate(-20deg) brightness(0.9);
+  }
+  50% {
+    filter: blur(100px) hue-rotate(0deg) brightness(1.2);
+  }
+  100% {
+    filter: blur(100px) hue-rotate(25deg) brightness(1.0);
+  }
+}
