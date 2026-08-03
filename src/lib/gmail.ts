@@ -48,12 +48,13 @@ export async function fetchRecentEmails(gmail: gmail_v1.Gmail, maxResults = 100,
       q: query,
     });
 
-    const messages = response.data.messages || [];
+    const messages = (response.data.messages || []).filter(
+      (msg): msg is gmail_v1.Schema$Message & { id: string } => !!msg.id
+    );
     
     // Fetch full details for each message
     const emailDetails = await Promise.all(
       messages.map(async (msg) => {
-        if (!msg.id) return null;
         const detail = await gmail.users.messages.get({
           userId: 'me',
           id: msg.id,
@@ -85,7 +86,7 @@ export async function fetchRecentEmails(gmail: gmail_v1.Gmail, maxResults = 100,
       })
     );
 
-    return emailDetails.filter(Boolean);
+    return emailDetails;
   } catch (error) {
     console.error('Error fetching emails:', error);
     throw error;
