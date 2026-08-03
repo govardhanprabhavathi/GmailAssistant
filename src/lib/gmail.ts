@@ -1,4 +1,4 @@
-import { google } from 'googleapis';
+import { google, gmail_v1 } from 'googleapis';
 
 export function getGmailClient(accessToken: string) {
   const auth = new google.auth.OAuth2();
@@ -15,7 +15,7 @@ export function getGmailClientFromRefreshToken(refreshToken: string) {
   return google.gmail({ version: 'v1', auth });
 }
 
-export async function ensureProcessedLabel(gmail: any) {
+export async function ensureProcessedLabel(gmail: gmail_v1.Gmail) {
   try {
     const res = await gmail.users.labels.list({ userId: 'me' });
     const labels = res.data.labels || [];
@@ -40,7 +40,7 @@ export async function ensureProcessedLabel(gmail: any) {
   }
 }
 
-export async function fetchRecentEmails(gmail: any, maxResults = 100, query = 'in:inbox') {
+export async function fetchRecentEmails(gmail: gmail_v1.Gmail, maxResults = 100, query = 'in:inbox') {
   try {
     const response = await gmail.users.messages.list({
       userId: 'me',
@@ -92,7 +92,7 @@ export async function fetchRecentEmails(gmail: any, maxResults = 100, query = 'i
   }
 }
 
-export async function trashEmails(gmail: any, messageIds: string[]) {
+export async function trashEmails(gmail: gmail_v1.Gmail, messageIds: string[]) {
   if (!messageIds.length) return;
 
   try {
@@ -111,7 +111,7 @@ export async function trashEmails(gmail: any, messageIds: string[]) {
   }
 }
 
-export async function labelEmails(gmail: any, messageIds: string[], labelId: string) {
+export async function labelEmails(gmail: gmail_v1.Gmail, messageIds: string[], labelId: string) {
   if (!messageIds.length || !labelId) return;
 
   try {
@@ -129,7 +129,7 @@ export async function labelEmails(gmail: any, messageIds: string[], labelId: str
   }
 }
 
-export async function sendUnsubscribeEmail(gmail: any, unsubscribeHeader: string) {
+export async function sendUnsubscribeEmail(gmail: gmail_v1.Gmail, unsubscribeHeader: string) {
   if (!unsubscribeHeader) return false;
 
   // Extract mailto link from the List-Unsubscribe header
