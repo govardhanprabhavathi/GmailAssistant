@@ -10,12 +10,30 @@ export default function Home() {
   const [cleaning, setCleaning] = useState(false);
   const [result, setResult] = useState<{message: string, count: number} | null>(null);
   const [unsubscribedSenders, setUnsubscribedSenders] = useState<Set<string>>(new Set());
+  const [isSystemActive, setIsSystemActive] = useState(false);
 
   useEffect(() => {
     if (session) {
       fetchEmails();
     }
   }, [session]);
+
+  useEffect(() => {
+    // The cron job runs exactly at 12:00 AM (0 hours)
+    // We will show the active signal from 12:00 AM to 12:05 AM to simulate the cron window.
+    const checkTime = () => {
+      const now = new Date();
+      if (now.getHours() === 0 && now.getMinutes() >= 0 && now.getMinutes() <= 5) {
+        setIsSystemActive(true);
+      } else {
+        setIsSystemActive(false);
+      }
+    };
+    
+    checkTime();
+    const interval = setInterval(checkTime, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchEmails = async () => {
     setLoading(true);
@@ -108,6 +126,13 @@ export default function Home() {
       <div className={styles.orbSecondary} />
       
       <div className={styles.dashboard}>
+        {isSystemActive && (
+          <div className={styles.activeSignal}>
+            <span className={styles.pulseDot} />
+            System is currently running the automated midnight cleanup
+          </div>
+        )}
+
         <section className={styles.glassCard}>
           <div className={styles.header}>
             <div>
