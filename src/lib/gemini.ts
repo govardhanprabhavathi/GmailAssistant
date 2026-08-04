@@ -43,6 +43,7 @@ Return ONLY a valid JSON array of objects.`,
             id: { type: SchemaType.STRING },
             category: { 
               type: SchemaType.STRING,
+              format: "enum",
               enum: ['JUNK', 'IMPORTANT', 'REVIEW']
             }
           },
