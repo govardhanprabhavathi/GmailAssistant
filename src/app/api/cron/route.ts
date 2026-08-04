@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { fetchRecentEmails, trashEmails, getGmailClientFromRefreshToken, ensureProcessedLabel, labelEmails } from '@/lib/gmail';
+import { fetchRecentEmails, trashEmails, getGmailClientFromRefreshToken, ensureProcessedLabel, ensureReviewLabel, labelEmails } from '@/lib/gmail';
 import { classifyEmails } from '@/lib/gemini';
+
+export const maxDuration = 60;
 
 export async function GET(req: Request) {
   // Simple auth for cron: require a secret token matched with an env variable
@@ -17,24 +19,37 @@ export async function GET(req: Request) {
   try {
     const gmail = getGmailClientFromRefreshToken(refreshToken);
     // Process emails older than 1 day, and not already processed
-    const emails = await fetchRecentEmails(gmail, 100, 'in:inbox older_than:1d -label:AI_PROCESSED');
+    const emails = await fetchRecentEmails(gmail, 50, 'in:inbox older_than:1d -label:AI_PROCESSED');
     
     if (emails.length === 0) {
       return NextResponse.json({ success: true, message: 'No new emails to process', trashedCount: 0 });
     }
 
-    const junkIds = await classifyEmails(emails);
+    const classifications = await classifyEmails(emails);
     
+    // Group IDs by category
+    const junkIds = classifications.filter((c: any) => c.category === 'JUNK').map((c: any) => c.id);
+    const importantIds = classifications.filter((c: any) => c.category === 'IMPORTANT').map((c: any) => c.id);
+    const reviewIds = classifications.filter((c: any) => c.category === 'REVIEW').map((c: any) => c.id);
+
+    // 1. Move JUNK to trash
     if (junkIds.length > 0) {
       await trashEmails(gmail, junkIds);
     }
 
-    // Label the non-junk emails so we don't process them again
-    const importantIds = emails.filter(e => !junkIds.includes(e.id)).map(e => e.id);
+    // 2. Label IMPORTANT with Blue AI_PROCESSED label
     if (importantIds.length > 0) {
-      const labelId = await ensureProcessedLabel(gmail);
-      if (labelId) {
-        await labelEmails(gmail, importantIds, labelId);
+      const processedLabelId = await ensureProcessedLabel(gmail);
+      if (processedLabelId) {
+        await labelEmails(gmail, importantIds, processedLabelId);
+      }
+    }
+
+    // 3. Label REVIEW with Orange AI_REVIEW label
+    if (reviewIds.length > 0) {
+      const reviewLabelId = await ensureReviewLabel(gmail);
+      if (reviewLabelId) {
+        await labelEmails(gmail, reviewIds, reviewLabelId);
       }
     }
 

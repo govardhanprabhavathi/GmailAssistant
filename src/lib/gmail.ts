@@ -15,11 +15,10 @@ export function getGmailClientFromRefreshToken(refreshToken: string) {
   return google.gmail({ version: 'v1', auth });
 }
 
-export async function ensureProcessedLabel(gmail: gmail_v1.Gmail) {
+export async function ensureColoredLabel(gmail: gmail_v1.Gmail, labelName: string, textColor: string, backgroundColor: string) {
   try {
     const res = await gmail.users.labels.list({ userId: 'me' });
     const labels = res.data.labels || [];
-    const labelName = 'AI_PROCESSED';
     let label = labels.find((l: any) => l.name === labelName);
     
     if (!label) {
@@ -28,16 +27,30 @@ export async function ensureProcessedLabel(gmail: gmail_v1.Gmail) {
         requestBody: {
           name: labelName,
           labelListVisibility: 'labelHide',
-          messageListVisibility: 'hide',
+          messageListVisibility: 'show',
+          color: {
+            textColor: textColor,
+            backgroundColor: backgroundColor
+          }
         },
       });
       label = created.data;
     }
     return label.id;
   } catch (error) {
-    console.error('Error ensuring label:', error);
+    console.error(`Error ensuring label ${labelName}:`, error);
     return null;
   }
+}
+
+export async function ensureProcessedLabel(gmail: gmail_v1.Gmail) {
+  // Safe Gmail Blue
+  return ensureColoredLabel(gmail, 'AI_PROCESSED', '#143361', '#cfe2f3');
+}
+
+export async function ensureReviewLabel(gmail: gmail_v1.Gmail) {
+  // Safe Gmail Orange
+  return ensureColoredLabel(gmail, 'AI_REVIEW', '#b65708', '#fce8b2');
 }
 
 export async function fetchRecentEmails(gmail: gmail_v1.Gmail, maxResults = 100, query = 'in:inbox') {
