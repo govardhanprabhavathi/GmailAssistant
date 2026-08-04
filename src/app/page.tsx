@@ -166,13 +166,7 @@ export default function Home() {
             Run the AI agent to classify and trash promotional emails securely.
           </p>
           <button className={styles.triggerBtn} onClick={handleClean} disabled={cleaning}>
-            {cleaning ? 'Cleaning...' : 'Start Cleaning Process'}
-            {!cleaning && (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            )}
+            {cleaning ? 'Cleaning...' : 'Process The Mails'}
           </button>
           {result && <p style={{ marginTop: '1rem', color: '#4ade80' }}>{result.message}</p>}
         </section>
