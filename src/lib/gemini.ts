@@ -7,7 +7,7 @@ export async function classifyEmails(emails: any[]) {
   
   const currentDate = new Date().toISOString();
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-flash-latest", 
+    model: "gemini-1.5-flash", 
     systemInstruction: `You are an AI assistant helping clean a Gmail inbox. Your job is to strictly classify a list of emails into 'JUNK', 'IMPORTANT', or 'REVIEW'.
 
 Current Date: ${currentDate}

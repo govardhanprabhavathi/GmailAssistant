@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
-import { sendUnsubscribeEmail, getGmailClient } from '@/lib/gmail';
+import { sendUnsubscribeEmail, getGmailClient, getGmailClientFromRefreshToken } from '@/lib/gmail';
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing unsubscribe header' }, { status: 400 });
     }
 
-    const gmail = getGmailClient(token);
+    const gmail = process.env.GOOGLE_REFRESH_TOKEN ? getGmailClientFromRefreshToken(process.env.GOOGLE_REFRESH_TOKEN) : getGmailClient(token);
     const success = await sendUnsubscribeEmail(gmail, unsubscribeHeader);
     
     if (success) {

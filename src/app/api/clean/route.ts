@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
-import { fetchRecentEmails, trashEmails, getGmailClient, ensureProcessedLabel, ensureReviewLabel, labelEmails } from '@/lib/gmail';
+import { fetchRecentEmails, trashEmails, getGmailClient, getGmailClientFromRefreshToken, ensureProcessedLabel, ensureReviewLabel, labelEmails } from '@/lib/gmail';
 import { classifyEmails } from '@/lib/gemini';
 
 export const maxDuration = 60; // Max allowed on Vercel Hobby to prevent mobile timeouts
@@ -16,7 +16,7 @@ export async function POST() {
   }
 
   try {
-    const gmail = getGmailClient(token);
+    const gmail = process.env.GOOGLE_REFRESH_TOKEN ? getGmailClientFromRefreshToken(process.env.GOOGLE_REFRESH_TOKEN) : getGmailClient(token);
     const emails = await fetchRecentEmails(gmail, 40, 'in:inbox');
     if (emails.length === 0) {
       return NextResponse.json({ success: true, message: 'Inbox is already clean', trashedCount: 0 });

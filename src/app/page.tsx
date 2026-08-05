@@ -56,12 +56,16 @@ export default function Home() {
     try {
       const res = await fetch('/api/clean', { method: 'POST' });
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Cleanup failed');
+      }
       setResult({ message: data.message, count: data.trashedCount });
       if (data.trashedCount > 0) {
         fetchEmails(); // Refresh list after cleaning
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      setResult({ message: e.message || 'Error cleaning emails', count: 0 });
     } finally {
       setCleaning(false);
     }
