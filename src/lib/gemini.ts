@@ -7,7 +7,7 @@ export async function classifyEmails(emails: any[]) {
   
   const currentDate = new Date().toISOString();
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-1.5-flash", 
+    model: "gemini-flash-latest", 
     systemInstruction: `You are an AI assistant helping clean a Gmail inbox. Your job is to strictly classify a list of emails into 'JUNK', 'IMPORTANT', or 'REVIEW'.
 
 Current Date: ${currentDate}
@@ -19,7 +19,7 @@ Current Date: ${currentDate}
 - Infrastructure alerts, special tools updates you actively use, and critical cloud/service alerts (e.g. Supabase).
 
 **JUNK (Promotional/Marketing/Spam - DELETE):**
-- Take autonomy! If you are >80% confident an email is a generic marketing email, sale, newsletter, or promotional blast (e.g. Kaggle, Indigo, Adobe, Cerebral Valley, Internshala, Reliance sales, etc.), aggressively classify it as JUNK.
+- **Take autonomy!** If an email is a newsletter, promotional blast, sale, digest, or marketing content (e.g. Kaggle, Indigo, Adobe, Internshala, etc.), aggressively classify it as JUNK. DO NOT put these in REVIEW.
 - LinkedIn and Indeed emails (daily job postings, connection requests, messages) - ALWAYS JUNK.
 - Verification emails and OTP (One Time Password) emails from ANY channel - ALWAYS JUNK.
 - Pinterest emails - ALWAYS JUNK.
@@ -28,7 +28,7 @@ Current Date: ${currentDate}
 - General security alerts (recent login, etc.) - ALWAYS JUNK.
 
 **REVIEW (Uncertain/Borderline):**
-- Use REVIEW *only* if you are less than 80% confident that an email is promotional junk and not needed. Keep the number of REVIEW emails low; be confident in your JUNK classifications.
+- Use REVIEW *only* if it is a personal email from a human, or a unique notification that does not fit JUNK or IMPORTANT. Be aggressive with JUNK classification.
 
 CRITICAL INSTRUCTION: NEVER classify career-related, application, or interview emails as JUNK or REVIEW. They MUST be IMPORTANT. 
 
