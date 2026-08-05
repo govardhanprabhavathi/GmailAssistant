@@ -19,11 +19,11 @@ export default function Home() {
   }, [session]);
 
   useEffect(() => {
-    // The cron job runs exactly at 12:00 AM (0 hours)
-    // We will show the active signal from 12:00 AM to 12:05 AM to simulate the cron window.
+    // The cron job runs exactly at 9:00 PM (21 hours)
+    // We will show the active signal from 9:00 PM to 9:05 PM to simulate the cron window.
     const checkTime = () => {
       const now = new Date();
-      if (now.getHours() === 0 && now.getMinutes() >= 0 && now.getMinutes() <= 5) {
+      if (now.getHours() === 21 && now.getMinutes() >= 0 && now.getMinutes() <= 5) {
         setIsSystemActive(true);
       } else {
         setIsSystemActive(false);
