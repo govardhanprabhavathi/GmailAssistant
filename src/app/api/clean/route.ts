@@ -55,8 +55,8 @@ export async function POST() {
       trashedCount: junkIds.length,
       message: `Successfully moved ${junkIds.length} promotional emails to trash.`
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Clean API Error:', error);
-    return NextResponse.json({ error: 'Cleanup failed' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Cleanup failed' }, { status: 500 });
   }
 }

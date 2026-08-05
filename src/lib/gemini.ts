@@ -7,7 +7,7 @@ export async function classifyEmails(emails: any[]) {
   
   const currentDate = new Date().toISOString();
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-flash-latest", 
+    model: "gemini-3.5-flash", 
     systemInstruction: `You are an AI assistant helping clean a Gmail inbox. Your job is to strictly classify a list of emails into 'JUNK', 'IMPORTANT', or 'REVIEW'.
 
 Current Date: ${currentDate}
@@ -69,8 +69,8 @@ Return ONLY a valid JSON array of objects.`,
     text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
     const classifications = JSON.parse(text);
     return Array.isArray(classifications) ? classifications : [];
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini classification failed:", error);
-    return [];
+    throw new Error(`Gemini Error: ${error.message}`);
   }
 }
