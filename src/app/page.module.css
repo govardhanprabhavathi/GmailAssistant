@@ -35,7 +35,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 24px;
-  padding: 1.5rem;
+  padding: 1.25rem;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, border-color 0.3s ease;
 }
@@ -69,7 +69,7 @@
 }
 
 .header h1 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -99,14 +99,13 @@
 
 .statsGrid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
 @media (min-width: 480px) {
   .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
     margin-top: 2rem;
   }
 }
@@ -241,7 +240,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
+  padding: 1.5rem 1.25rem;
 }
 
 @media (min-width: 768px) {
@@ -255,16 +254,26 @@
   background: #fff;
   color: #000;
   border: none;
-  padding: 1rem 2rem;
+  padding: 0.875rem 1.5rem;
   border-radius: 30px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   gap: 0.5rem;
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: inherit;
+}
+
+@media (min-width: 480px) {
+  .triggerBtn {
+    width: auto;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
 }
 
 .triggerBtn:hover {
