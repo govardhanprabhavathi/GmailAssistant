@@ -45,12 +45,12 @@ export async function ensureColoredLabel(gmail: gmail_v1.Gmail, labelName: strin
 
 export async function ensureProcessedLabel(gmail: gmail_v1.Gmail) {
   // Safe Gmail Blue
-  return ensureColoredLabel(gmail, 'AI_PROCESSED', '#143361', '#cfe2f3');
+  return ensureColoredLabel(gmail, 'AI_PROCESSED', '#1c4587', '#c9daf8');
 }
 
 export async function ensureReviewLabel(gmail: gmail_v1.Gmail) {
   // Safe Gmail Orange
-  return ensureColoredLabel(gmail, 'AI_REVIEW', '#b65708', '#fce8b2');
+  return ensureColoredLabel(gmail, 'AI_REVIEW', '#a46a21', '#fce8b3');
 }
 
 export async function fetchRecentEmails(gmail: gmail_v1.Gmail, maxResults = 100, query = 'in:inbox') {

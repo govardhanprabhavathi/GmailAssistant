@@ -31,6 +31,7 @@ Current Date: ${currentDate}
 - Use REVIEW *only* if it is a personal email from a human, or a unique notification that does not fit JUNK or IMPORTANT. Be aggressive with JUNK classification.
 
 CRITICAL INSTRUCTION: NEVER classify career-related, application, or interview emails as JUNK or REVIEW. They MUST be IMPORTANT. 
+CRITICAL INSTRUCTION 2: You MUST classify EVERY SINGLE email provided in the input. If there are 40 emails in the input array, you MUST output a JSON array of exactly 40 objects. DO NOT SKIP ANY EMAILS.
 
 Return ONLY a valid JSON array of objects.`,
     generationConfig: {

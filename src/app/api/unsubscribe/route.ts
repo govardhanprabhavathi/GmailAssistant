@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing unsubscribe header' }, { status: 400 });
     }
 
-    const gmail = process.env.GOOGLE_REFRESH_TOKEN ? getGmailClientFromRefreshToken(process.env.GOOGLE_REFRESH_TOKEN) : getGmailClient(token);
+    const gmail = getGmailClient(token);
     const success = await sendUnsubscribeEmail(gmail, unsubscribeHeader);
     
     if (success) {

@@ -13,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const gmail = process.env.GOOGLE_REFRESH_TOKEN ? getGmailClientFromRefreshToken(process.env.GOOGLE_REFRESH_TOKEN) : getGmailClient(token);
+    const gmail = getGmailClient(token);
     const emails = await fetchRecentEmails(gmail, 100);
     return NextResponse.json({ emails });
   } catch (error) {
