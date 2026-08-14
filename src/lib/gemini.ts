@@ -12,6 +12,10 @@ export async function classifyEmails(emails: any[]) {
 
 Current Date: ${currentDate}
 
+**QUEUE (Delayed Deletion):**
+- Any event-related email stating "registration not accepted", "not selected", "application declined", or similar rejected event/registration emails.
+- These will be temporarily held for 24 hours in a red Queue label before deletion.
+
 **IMPORTANT (CRITICAL - STRICTLY DO NOT DELETE):**
 - Job applications, responses regarding applications, interview scheduling, and ANY career-related emails.
 - Event pending approval emails, event registrations, or event confirmations (e.g. GDG Bangalore, tech invites).
@@ -45,7 +49,7 @@ Return ONLY a valid JSON array of objects.`,
             category: { 
               type: SchemaType.STRING,
               format: "enum",
-              enum: ['JUNK', 'IMPORTANT', 'REVIEW']
+              enum: ['JUNK', 'IMPORTANT', 'REVIEW', 'QUEUE']
             }
           },
           required: ['id', 'category']
@@ -61,7 +65,7 @@ Return ONLY a valid JSON array of objects.`,
     snippet: e.snippet
   }));
 
-  const prompt = `Classify the following emails into the 3 categories. Return ONLY the raw JSON array.\n\n${JSON.stringify(emailData, null, 2)}`;
+  const prompt = `Classify the following emails into the 4 categories. Return ONLY the raw JSON array.\n\n${JSON.stringify(emailData, null, 2)}`;
 
   try {
     const result = await model.generateContent(prompt);

@@ -53,6 +53,11 @@ export async function ensureReviewLabel(gmail: gmail_v1.Gmail) {
   return ensureColoredLabel(gmail, 'AI_REVIEW', '#a46a21', '#fce8b3');
 }
 
+export async function ensureQueueLabel(gmail: gmail_v1.Gmail) {
+  // Safe Gmail Red
+  return ensureColoredLabel(gmail, 'Queue', '#ffffff', '#cc3a21');
+}
+
 export async function fetchRecentEmails(gmail: gmail_v1.Gmail, maxResults = 100, query = 'in:inbox') {
   try {
     const response = await gmail.users.messages.list({

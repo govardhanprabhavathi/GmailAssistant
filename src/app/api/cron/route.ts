@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchRecentEmails, trashEmails, getGmailClientFromRefreshToken, ensureProcessedLabel, ensureReviewLabel, labelEmails } from '@/lib/gmail';
+import { fetchRecentEmails, trashEmails, getGmailClientFromRefreshToken, ensureProcessedLabel, ensureReviewLabel, ensureQueueLabel, labelEmails } from '@/lib/gmail';
 import { classifyEmails } from '@/lib/gemini';
 
 export const maxDuration = 60;
@@ -18,11 +18,24 @@ export async function GET(req: Request) {
 
   try {
     const gmail = getGmailClientFromRefreshToken(refreshToken);
-    // Process emails older than 1 day, and not already processed
+    let trashedQueueCount = 0;
+
+    // 1. Delete QUEUE emails older than 1 day
+    const oldQueueEmails = await fetchRecentEmails(gmail, 50, 'in:inbox label:Queue older_than:1d');
+    if (oldQueueEmails.length > 0) {
+      const oldQueueIds = oldQueueEmails.map((e: any) => e.id);
+      await trashEmails(gmail, oldQueueIds);
+      trashedQueueCount = oldQueueIds.length;
+    }
+
+    // 2. Process new emails older than 1 day, and not already processed
     const emails = await fetchRecentEmails(gmail, 50, 'in:inbox older_than:1d -label:AI_PROCESSED');
     
-    if (emails.length === 0) {
+    if (emails.length === 0 && trashedQueueCount === 0) {
       return NextResponse.json({ success: true, message: 'No new emails to process', trashedCount: 0 });
+    }
+    if (emails.length === 0) {
+      return NextResponse.json({ success: true, message: `No new emails to classify. Trashed ${trashedQueueCount} old Queue emails.`, trashedCount: trashedQueueCount });
     }
 
     const classifications = await classifyEmails(emails);
@@ -31,8 +44,9 @@ export async function GET(req: Request) {
     const junkIds = classifications.filter((c: any) => c.category === 'JUNK').map((c: any) => c.id);
     const importantIds = classifications.filter((c: any) => c.category === 'IMPORTANT').map((c: any) => c.id);
     const reviewIds = classifications.filter((c: any) => c.category === 'REVIEW').map((c: any) => c.id);
+    const queueIds = classifications.filter((c: any) => c.category === 'QUEUE').map((c: any) => c.id);
 
-    // 1. Move JUNK to trash
+    // 3. Move JUNK to trash
     if (junkIds.length > 0) {
       await trashEmails(gmail, junkIds);
     }
@@ -53,10 +67,19 @@ export async function GET(req: Request) {
       }
     }
 
+    // 6. Label QUEUE with Red Queue label
+    if (queueIds.length > 0) {
+      const queueLabelId = await ensureQueueLabel(gmail);
+      if (queueLabelId) {
+        await labelEmails(gmail, queueIds, queueLabelId);
+      }
+    }
+
+    const totalTrashed = junkIds.length + trashedQueueCount;
     return NextResponse.json({ 
       success: true, 
-      trashedCount: junkIds.length,
-      message: `Successfully moved ${junkIds.length} promotional emails to trash.`
+      trashedCount: totalTrashed,
+      message: `Successfully moved ${junkIds.length} promotional emails and ${trashedQueueCount} expired Queue emails to trash.`
     });
   } catch (error) {
     console.error('Cron API Error:', error);

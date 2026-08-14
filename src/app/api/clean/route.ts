@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
-import { fetchRecentEmails, trashEmails, getGmailClient, getGmailClientFromRefreshToken, ensureProcessedLabel, ensureReviewLabel, labelEmails } from '@/lib/gmail';
+import { fetchRecentEmails, trashEmails, getGmailClient, getGmailClientFromRefreshToken, ensureProcessedLabel, ensureReviewLabel, ensureQueueLabel, labelEmails } from '@/lib/gmail';
 import { classifyEmails } from '@/lib/gemini';
 
 export const maxDuration = 60; // Max allowed on Vercel Hobby to prevent mobile timeouts
@@ -28,6 +28,7 @@ export async function POST() {
     const junkIds = classifications.filter((c: any) => c.category === 'JUNK').map((c: any) => c.id);
     const importantIds = classifications.filter((c: any) => c.category === 'IMPORTANT').map((c: any) => c.id);
     const reviewIds = classifications.filter((c: any) => c.category === 'REVIEW').map((c: any) => c.id);
+    const queueIds = classifications.filter((c: any) => c.category === 'QUEUE').map((c: any) => c.id);
 
     // 1. Move JUNK to trash
     if (junkIds.length > 0) {
@@ -47,6 +48,14 @@ export async function POST() {
       const reviewLabelId = await ensureReviewLabel(gmail);
       if (reviewLabelId) {
         await labelEmails(gmail, reviewIds, reviewLabelId);
+      }
+    }
+
+    // 4. Label QUEUE with Red Queue label
+    if (queueIds.length > 0) {
+      const queueLabelId = await ensureQueueLabel(gmail);
+      if (queueLabelId) {
+        await labelEmails(gmail, queueIds, queueLabelId);
       }
     }
 
