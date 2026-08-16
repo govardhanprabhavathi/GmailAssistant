@@ -17,7 +17,7 @@ export async function POST() {
 
   try {
     const gmail = getGmailClient(token);
-    const emails = await fetchRecentEmails(gmail, 40, 'in:inbox');
+    const emails = await fetchRecentEmails(gmail, 40, 'in:inbox -label:AI_PROCESSED -label:AI_REVIEW -label:Queue');
     if (emails.length === 0) {
       return NextResponse.json({ success: true, message: 'Inbox is already clean', trashedCount: 0 });
     }
