@@ -13,7 +13,7 @@ export default function Home() {
   const [isSystemActive, setIsSystemActive] = useState(false);
 
   useEffect(() => {
-    if (session?.error === 'RefreshAccessTokenError') {
+    if ((session as any)?.error === 'RefreshAccessTokenError') {
       signIn('google'); // Force sign in to obtain a new set of access and refresh tokens
     } else if (session) {
       fetchEmails();
