@@ -70,39 +70,46 @@ export async function fetchRecentEmails(gmail: gmail_v1.Gmail, maxResults = 100,
       (msg): msg is gmail_v1.Schema$Message & { id: string } => !!msg.id
     );
     
-    // Fetch full details for each message
-    const emailDetails = await Promise.all(
-      messages.map(async (msg) => {
-        const detail = await gmail.users.messages.get({
-          userId: 'me',
-          id: msg.id,
-          format: 'metadata',
-          metadataHeaders: ['From', 'Subject', 'Date', 'List-Unsubscribe'],
-        });
+    // Fetch full details for each message in chunks to prevent socket hang up (ECONNRESET)
+    const emailDetails: any[] = [];
+    const chunkSize = 10;
+    
+    for (let i = 0; i < messages.length; i += chunkSize) {
+      const chunk = messages.slice(i, i + chunkSize);
+      const chunkResults = await Promise.all(
+        chunk.map(async (msg) => {
+          const detail = await gmail.users.messages.get({
+            userId: 'me',
+            id: msg.id,
+            format: 'metadata',
+            metadataHeaders: ['From', 'Subject', 'Date', 'List-Unsubscribe'],
+          });
 
-        const headers = detail.data.payload?.headers || [];
-        const fromHeader = headers.find(h => h.name === 'From')?.value || '';
-        const subject = headers.find(h => h.name === 'Subject')?.value || 'No Subject';
-        const date = headers.find(h => h.name === 'Date')?.value || '';
-        const unsubscribe = headers.find(h => h.name === 'List-Unsubscribe')?.value || '';
-        
-        // Parse "Name <email@domain.com>"
-        const emailMatch = fromHeader.match(/<(.+)>/);
-        const email = emailMatch ? emailMatch[1] : fromHeader;
-        const nameMatch = fromHeader.match(/^([^<]+)/);
-        const name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email;
+          const headers = detail.data.payload?.headers || [];
+          const fromHeader = headers.find(h => h.name === 'From')?.value || '';
+          const subject = headers.find(h => h.name === 'Subject')?.value || 'No Subject';
+          const date = headers.find(h => h.name === 'Date')?.value || '';
+          const unsubscribe = headers.find(h => h.name === 'List-Unsubscribe')?.value || '';
+          
+          // Parse "Name <email@domain.com>"
+          const emailMatch = fromHeader.match(/<(.+)>/);
+          const email = emailMatch ? emailMatch[1] : fromHeader;
+          const nameMatch = fromHeader.match(/^([^<]+)/);
+          const name = nameMatch ? nameMatch[1].trim().replace(/"/g, '') : email;
 
-        return {
-          id: msg.id,
-          threadId: detail.data.threadId,
-          snippet: detail.data.snippet || '',
-          from: { name, email, raw: fromHeader },
-          subject,
-          date,
-          unsubscribeLink: unsubscribe,
-        };
-      })
-    );
+          return {
+            id: msg.id,
+            threadId: detail.data.threadId,
+            snippet: detail.data.snippet || '',
+            from: { name, email, raw: fromHeader },
+            subject,
+            date,
+            unsubscribeLink: unsubscribe,
+          };
+        })
+      );
+      emailDetails.push(...chunkResults);
+    }
 
     return emailDetails;
   } catch (error) {
