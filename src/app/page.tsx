@@ -2,9 +2,11 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { LandingPage } from "@/components/LandingPage";
 
 export default function Home() {
   const { data: session, status } = useSession();
+  const [view, setView] = useState<'dashboard' | 'landing'>('dashboard');
   const [emails, setEmails] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [cleaning, setCleaning] = useState(false);
@@ -105,33 +107,49 @@ export default function Home() {
     .slice(0, 10); // Show top 10 recent senders
 
   if (status === "loading") {
-    return <main className={styles.container}><div className={styles.orbSecondary} /><p>Loading...</p></main>;
+    return <main className={styles.container}><div className={styles.orbSecondary} /><p>Loading Fishbowl...</p></main>;
   }
 
-  if (!session) {
+  // If visitor is not signed in, show the comprehensive showcase landing page
+  if (!session || view === 'landing') {
     return (
-      <main className={styles.container}>
-        <div className={styles.orbSecondary} />
-        <div className={styles.dashboard} style={{ display: 'flex', justifyContent: 'center' }}>
-          <section className={`${styles.glassCard} ${styles.triggerCard}`}>
-            <h1>Welcome to Fishbowl</h1>
-            <p className={styles.subtitle} style={{ marginTop: '1rem', color: '#cbd5e1', marginBottom: '2rem' }}>
-              Intelligently clean your Gmail inbox using AI.
-            </p>
-            <button className={styles.triggerBtn} onClick={() => signIn('google')}>
-              Sign in with Google
-            </button>
-          </section>
-        </div>
-      </main>
+      <LandingPage
+        session={session}
+        onLaunchDashboard={() => setView('dashboard')}
+        onSignIn={() => signIn('google')}
+      />
     );
   }
 
+  // Active Authenticated User Dashboard
   return (
     <main className={styles.container}>
       <div className={styles.orbSecondary} />
       
       <div className={styles.dashboard}>
+        {/* Navigation bar inside dashboard */}
+        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ fontSize: '1.2rem' }}>🐟</span>
+            <strong style={{ letterSpacing: '-0.02em', fontSize: '1.1rem' }}>Fishbowl</strong>
+          </div>
+          <button
+            onClick={() => setView('landing')}
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              color: '#a1a1aa',
+              padding: '0.4rem 0.9rem',
+              borderRadius: '999px',
+              fontSize: '0.8rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+          >
+            ← View Showcase & Architecture
+          </button>
+        </div>
+
         {isSystemActive && (
           <div className={styles.activeSignal}>
             <span className={styles.pulseDot} />
