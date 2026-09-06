@@ -26,9 +26,9 @@ export async function POST(req: Request) {
     if (refreshToken) {
       try {
         const gmail = getGmailClientFromRefreshToken(refreshToken);
-        const adminEmail = process.env.ADMIN_EMAIL || 'govardhanprabhavathi@gmail.com, govardhanpravathi@gmail.com';
-        const subject = `[FisherBowl] Whitelist Access Request: ${name}`;
-        const bodyText = `Hello Govardhan,\n\nYou received a new whitelist access request for FisherBowl:\n\n• Name: ${name}\n• Email: ${email}\n• Reason / Note: ${note || 'None provided'}\n• Received At: ${new Date().toLocaleString()}\n\n---------------------------------------------\nHow to grant access:\n1. Open Google Cloud Console -> APIs & Services -> OAuth consent screen (or Audience / Test Users).\n2. Add '${email}' to the authorized test users list (or approve their login).\n\nBest,\nFisherBowl Automation System`;
+        const adminEmail = 'govardhanpravathi@gmail.com';
+        const subject = `[FisherBowl Access Request] New Request from ${name}`;
+        const bodyText = `Hello Govardhan,\n\nYou have received a new access request for FisherBowl:\n\nName: ${name}\nEmail: ${email}\nReason / Note: ${note || 'None provided'}\n\nTimestamp: ${new Date().toLocaleString()}\n\nTo grant them access, add their email (${email}) to your Google Cloud Console OAuth Test Users list (or allow their account directly).\n\nBest,\nFisherBowl Automation System`;
 
         const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
         const messageParts = [
