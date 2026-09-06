@@ -14,7 +14,7 @@ export async function GET() {
 
   try {
     const gmail = getGmailClient(token);
-    const emails = await fetchRecentEmails(gmail, 100);
+    const emails = await fetchRecentEmails(gmail, 25);
     return NextResponse.json({ emails });
   } catch (error) {
     console.error('API Error:', error);
