@@ -105,17 +105,12 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
     <div className={styles.landingContainer}>
       <div className={styles.ambientGlowTop} />
 
-      {/* Floating Navbar */}
+      {/* Seamless Minimalist Navbar */}
       <header className={styles.navbar}>
         <div className={styles.navInner}>
-          <div className={styles.logoGroup}>
-            <div className={styles.logoBadge} style={{ fontWeight: 800, fontSize: '0.85rem' }}>FB</div>
+          <a href="#" className={styles.logoGroup}>
             <span className={styles.logoText}>FisherBowl</span>
-            <span className={styles.liveBadge}>
-              <span className={styles.liveDot} />
-              v2.5 Gemini
-            </span>
-          </div>
+          </a>
 
           <nav className={styles.navLinks}>
             <a href="#pipeline" className={styles.navLink}>
@@ -136,7 +131,7 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
             {session ? (
               <button
                 onClick={onLaunchDashboard}
-                className={styles.primaryBtn}
+                className={styles.dashboardBtn}
               >
                 Dashboard →
               </button>
