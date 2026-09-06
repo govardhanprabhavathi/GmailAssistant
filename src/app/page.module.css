@@ -1,10 +1,14 @@
+/* =========================================================
+   FISHERBOWL — DASHBOARD STYLES (RESPONSIVE & LUXURY GLASS)
+   ========================================================= */
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100vh;
-  padding: 1rem;
+  padding: 1.5rem 1rem 3rem;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -15,158 +19,298 @@
 
 @media (min-width: 768px) {
   .container {
-    padding: 2rem;
+    padding: 2.5rem 1.5rem 4rem;
   }
 }
 
 .dashboard {
   width: 100%;
-  max-width: 800px;
+  max-width: 860px;
   display: grid;
-  gap: 1.5rem;
+  gap: 1.25rem;
   grid-template-columns: 1fr;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .dashboard {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 1.5rem;
   }
 }
 
-.glassCard {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+/* Dashboard Top Navigation Bar */
+.dashboardNav {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-radius: 24px;
-  padding: 1rem;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  margin-bottom: 0.25rem;
+}
+
+.dashBrand {
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.showcaseLinkBtn {
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: #d4d4d8;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.showcaseLinkBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.showcaseLinkBtn:active {
+  transform: scale(0.98);
+}
+
+/* Glass Card Base */
+.glassCard {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 20px;
+  padding: 1.25rem 1.15rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
   box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .glassCard {
-    padding: 2rem;
+    padding: 1.75rem 1.5rem;
+    border-radius: 24px;
   }
 }
 
 .glassCard:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(96, 165, 250, 0.3);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(59, 130, 246, 0.1);
 }
 
+/* Header Inside User Card */
 .header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
 }
 
-@media (min-width: 600px) {
-  .header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
+.headerTextGroup {
+  min-width: 0;
+  flex: 1;
 }
 
 .header h1 {
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.25rem, 3.5vw, 1.85rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
   line-height: 1.2;
-  background: linear-gradient(to right, #fff, #a1a1aa);
+  background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   word-break: break-word;
-  max-width: 100%;
-}
-
-@media (min-width: 768px) {
-  .header h1 {
-    font-size: 2.5rem;
-    line-height: 1.1;
-  }
 }
 
 .subtitle {
   color: #a1a1aa;
-  font-size: 1rem;
-  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  line-height: 1.4;
 }
 
 @media (min-width: 768px) {
   .subtitle {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
   }
 }
 
+.avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Stats Counter Grid */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
 }
 
 @media (min-width: 480px) {
   .statsGrid {
-    margin-top: 2rem;
+    gap: 1rem;
+    margin-top: 1.5rem;
   }
 }
 
 .statItem {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
 }
 
 .statValue {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #fff;
-}
-
-@media (min-width: 768px) {
-  .statValue {
-    font-size: 2rem;
-  }
+  font-size: clamp(1.4rem, 3.2vw, 1.85rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: #ffffff;
 }
 
 .statLabel {
   color: #71717a;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 650;
+}
+
+/* Trigger Action Card */
+.triggerCard {
+  background: radial-gradient(ellipse at top, rgba(30, 58, 138, 0.3) 0%, rgba(15, 23, 42, 0.7) 100%);
+  border-top: 1px solid rgba(59, 130, 246, 0.4);
+  border-left: 1px solid rgba(59, 130, 246, 0.15);
+  border-right: 1px solid rgba(59, 130, 246, 0.15);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.06);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1.15rem;
 }
 
 @media (min-width: 768px) {
-  .statLabel {
-    font-size: 0.875rem;
+  .triggerCard {
+    padding: 2rem 1.5rem;
   }
 }
 
+.triggerCard h2 {
+  font-size: 1.25rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.triggerBtn {
+  margin-top: 1.25rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f4f5 100%);
+  color: #09090b;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: 0.8rem 1.6rem;
+  border-radius: 9999px;
+  font-size: 0.925rem;
+  font-weight: 650;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.5rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15), 0 6px 18px -3px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  min-height: 46px;
+  box-sizing: border-box;
+}
+
+.triggerBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25), 0 10px 24px -3px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.triggerBtn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.triggerBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Sender List Section */
 .senderList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.65rem;
+  width: 100%;
 }
 
 .senderItem {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
+  align-items: stretch;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
   background: rgba(255, 255, 255, 0.02);
-  border-radius: 16px;
-  transition: background 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 540px) {
   .senderItem {
     flex-direction: row;
     align-items: center;
@@ -176,39 +320,36 @@
 
 .senderItem:hover {
   background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .senderInfo {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   width: 100%;
+  min-width: 0;
   overflow: hidden;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--brand-blue), var(--brand-dark-blue));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #fff;
+.senderNameGroup {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-align: left;
 }
 
 .senderName {
-  font-weight: 500;
-  color: #e4e4e7;
+  font-weight: 600;
+  color: #f4f4f5;
+  font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .senderEmail {
-  font-size: 0.875rem;
+  font-size: 0.775rem;
   color: #71717a;
   white-space: nowrap;
   overflow: hidden;
@@ -216,77 +357,80 @@
 }
 
 .unsubscribeBtn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: #d4d4d8;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.775rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
   width: 100%;
   text-align: center;
+  flex-shrink: 0;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 540px) {
   .unsubscribeBtn {
     width: auto;
   }
 }
 
 .unsubscribeBtn:hover {
-  background: #ef4444;
-  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  transform: translateY(-1px);
 }
 
-.triggerCard {
-  background: linear-gradient(145deg, rgba(29, 78, 216, 0.2), rgba(15, 23, 42, 0.6));
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  text-align: center;
+/* Active Signal (Cron running) */
+.activeSignal {
+  grid-column: 1 / -1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1.25rem;
-}
-
-@media (min-width: 768px) {
-  .triggerCard {
-    padding: 3rem 2rem;
-  }
-}
-
-.triggerBtn {
-  margin-top: 1.5rem;
-  background: #fff;
-  color: #000;
-  border: none;
-  padding: 0.875rem 1.5rem;
-  border-radius: 30px;
-  font-size: 0.95rem;
+  gap: 0.65rem;
+  background: rgba(74, 222, 128, 0.06);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  padding: 0.75rem 1.25rem;
+  border-radius: 16px;
+  color: #4ade80;
+  font-size: 0.85rem;
   font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  gap: 0.5rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-  font-family: inherit;
+  backdrop-filter: blur(12px);
+  text-align: center;
 }
 
-@media (min-width: 480px) {
-  .triggerBtn {
-    width: auto;
-    padding: 1rem 2rem;
-    font-size: 1rem;
+.pulseDot {
+  width: 8px;
+  height: 8px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #4ade80;
+  animation: greenPulse 1.5s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes greenPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
   }
-}
-
-.triggerBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  70% {
+    box-shadow: 0 0 0 8px rgba(74, 222, 128, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+  }
 }
 
 .orbSecondary {
@@ -295,45 +439,9 @@
   right: -5%;
   width: 40vw;
   height: 40vw;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
   filter: blur(100px);
   z-index: -1;
   border-radius: 50%;
   pointer-events: none;
-}
-
-.activeSignal {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  background: rgba(74, 222, 128, 0.05);
-  border: 1px solid rgba(74, 222, 128, 0.2);
-  padding: 1rem 1.5rem;
-  border-radius: 20px;
-  color: #4ade80;
-  font-weight: 500;
-  backdrop-filter: blur(8px);
-}
-
-.pulseDot {
-  width: 10px;
-  height: 10px;
-  background-color: #4ade80;
-  border-radius: 50%;
-  box-shadow: 0 0 12px #4ade80;
-  animation: greenPulse 1.5s infinite;
-}
-
-@keyframes greenPulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(74, 222, 128, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
-  }
 }

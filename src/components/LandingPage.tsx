@@ -109,8 +109,8 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
       <header className={styles.navbar}>
         <div className={styles.navInner}>
           <div className={styles.logoGroup}>
-            <div className={styles.logoBadge}>🐟</div>
-            <span className={styles.logoText}>Fishbowl</span>
+            <div className={styles.logoBadge} style={{ fontWeight: 800, fontSize: '0.85rem' }}>FB</div>
+            <span className={styles.logoText}>FisherBowl</span>
             <span className={styles.liveBadge}>
               <span className={styles.liveDot} />
               v2.5 Gemini
@@ -160,7 +160,7 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <div className={styles.taglinePill}>
-          <span>✨ Autonomous Gmail Intelligence Engine</span>
+          <span>Autonomous Gmail Intelligence Engine</span>
         </div>
 
         <h1 className={styles.heroTitle}>
@@ -168,7 +168,7 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
         </h1>
 
         <p className={styles.heroSubtitle}>
-          Fishbowl autonomously digests, classifies, labels, and trashes promotional
+          FisherBowl autonomously digests, classifies, labels, and trashes promotional
           clutter 24/7 using <strong>Google Gemini 2.5 Flash</strong> and nightly background
           schedulers. Zero manual sorting required.
         </p>
@@ -179,18 +179,18 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
               onClick={onLaunchDashboard}
               className={styles.largePrimaryBtn}
             >
-              Launch Dashboard 🚀
+              Launch Dashboard
             </button>
           ) : (
             <button
               onClick={onSignIn}
               className={styles.largePrimaryBtn}
             >
-              Sign In with Google 🔑
+              Sign In with Google
             </button>
           )}
           <a href="#request-access" className={styles.largeSecondaryBtn}>
-            Request Whitelist Access 📝
+            Request Whitelist Access
           </a>
         </div>
 
@@ -223,7 +223,7 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
             <span className={styles.dotYellow} />
             <span className={styles.dotGreen} />
           </div>
-          <span className={styles.windowTitle}>Fishbowl Engine Simulator — Gemini 2.5 Flash</span>
+          <span className={styles.windowTitle}>FisherBowl Engine Simulator — Gemini 2.5 Flash</span>
           <div style={{ width: '40px' }} />
         </div>
 
@@ -375,7 +375,7 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
             <div className={styles.bentoIconBadge}>🧠</div>
             <h3 className={styles.bentoTitle}>Deep Context Rules Engine</h3>
             <p className={styles.bentoDesc}>
-              Unlike naive keyword regex filters, Fishbowl understands nuances. It aggressively purges automated job digests, marketing broadcasts, and social feeds while strictly guarding 1-to-1 recruiter chats, Rotary District agendas, and cloud infrastructure alerts.
+              Unlike naive keyword regex filters, FisherBowl understands nuances. It aggressively purges automated job digests, marketing broadcasts, and social feeds while strictly guarding 1-to-1 recruiter chats, Rotary District agendas, and cloud infrastructure alerts.
             </p>
           </div>
 
@@ -418,12 +418,12 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
         <div className={styles.formContainer}>
           <h2 className={styles.formTitle}>Request Whitelist Access</h2>
           <p className={styles.formSubtitle}>
-            Fishbowl is currently in private beta. Submit your details below, and Govardhan will grant your Google account access to start cleaning your inbox.
+            FisherBowl is currently in private beta. Submit your details below, and Govardhan will grant your Google account access to start cleaning your inbox.
           </p>
 
           {submitSuccess ? (
             <div className={styles.successCard}>
-              <div className={styles.successHeading}>🎉 Request Received!</div>
+              <div className={styles.successHeading}>Request Received</div>
               <p className={styles.successText}>{submitSuccess}</p>
             </div>
           ) : (
@@ -453,7 +453,7 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
               </div>
 
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Why would you like to use Fishbowl? (Optional)</label>
+                <label className={styles.fieldLabel}>Why would you like to use FisherBowl? (Optional)</label>
                 <textarea
                   rows={3}
                   placeholder="Tell us a bit about your inbox volume or organization..."
@@ -480,7 +480,7 @@ export function LandingPage({ session, onLaunchDashboard, onSignIn }: LandingPag
 
       {/* Footer */}
       <footer className={styles.footer}>
-        <div className={styles.footerBrand}>🐟 Fishbowl — AI Gmail Assistant</div>
+        <div className={styles.footerBrand}>FisherBowl — AI Gmail Assistant</div>
         <p className={styles.footerText}>
           Built with Next.js, Google Gemini 2.5 Flash, and Google Cloud APIs. Designed & Maintained by{' '}
           <strong style={{ color: '#e4e4e7' }}>Govardhan Yasani</strong>.

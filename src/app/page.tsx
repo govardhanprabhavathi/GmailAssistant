@@ -107,7 +107,12 @@ export default function Home() {
     .slice(0, 10); // Show top 10 recent senders
 
   if (status === "loading") {
-    return <main className={styles.container}><div className={styles.orbSecondary} /><p>Loading Fishbowl...</p></main>;
+    return (
+      <main className={styles.container}>
+        <div className={styles.orbSecondary} />
+        <p style={{ color: '#a1a1aa', fontWeight: 500 }}>Loading FisherBowl...</p>
+      </main>
+    );
   }
 
   // If visitor is not signed in, show the comprehensive showcase landing page
@@ -128,23 +133,11 @@ export default function Home() {
       
       <div className={styles.dashboard}>
         {/* Navigation bar inside dashboard */}
-        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ fontSize: '1.2rem' }}>🐟</span>
-            <strong style={{ letterSpacing: '-0.02em', fontSize: '1.1rem' }}>Fishbowl</strong>
-          </div>
+        <div className={styles.dashboardNav}>
+          <span className={styles.dashBrand}>FisherBowl</span>
           <button
             onClick={() => setView('landing')}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              color: '#a1a1aa',
-              padding: '0.4rem 0.9rem',
-              borderRadius: '999px',
-              fontSize: '0.8rem',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
+            className={styles.showcaseLinkBtn}
           >
             ← View Showcase & Architecture
           </button>
@@ -159,14 +152,24 @@ export default function Home() {
 
         <section className={styles.glassCard}>
           <div className={styles.header}>
-            <div>
+            <div className={styles.headerTextGroup}>
               <h1>Welcome back, {session.user?.name?.split(' ')[0]}</h1>
-              <p className={styles.subtitle}>Your inbox is looking a bit cluttered today.</p>
+              <p className={styles.subtitle}>Your inbox is connected and active.</p>
             </div>
             {session.user?.image ? (
-              <img src={session.user.image} alt="User Avatar" className={styles.avatar} style={{ width: '48px', height: '48px', cursor: 'pointer' }} onClick={() => signOut()} />
+              <img
+                src={session.user.image}
+                alt="User Avatar"
+                className={styles.avatar}
+                onClick={() => signOut()}
+                title="Click to Sign Out"
+              />
             ) : (
-              <div className={styles.avatar} style={{ width: '48px', height: '48px', cursor: 'pointer' }} onClick={() => signOut()}>
+              <div
+                className={styles.avatar}
+                onClick={() => signOut()}
+                title="Click to Sign Out"
+              >
                 {session.user?.name?.charAt(0) || 'U'}
               </div>
             )}
@@ -186,40 +189,56 @@ export default function Home() {
 
         <section className={`${styles.glassCard} ${styles.triggerCard}`}>
           <h2>Ready to clean?</h2>
-          <p className={styles.subtitle} style={{ marginTop: '1rem', color: '#cbd5e1' }}>
+          <p className={styles.subtitle} style={{ marginTop: '0.4rem', color: '#cbd5e1' }}>
             Run the AI agent to classify and trash promotional emails securely.
           </p>
           <button className={styles.triggerBtn} onClick={handleClean} disabled={cleaning}>
-            {cleaning ? 'Cleaning...' : 'Process The Mails'}
+            {cleaning ? 'Cleaning Inbox...' : 'Process The Mails'}
           </button>
-          {result && <p style={{ marginTop: '1rem', color: '#4ade80' }}>{result.message}</p>}
+          {result && (
+            <p style={{ marginTop: '0.75rem', color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>
+              {result.message}
+            </p>
+          )}
         </section>
 
         <section className={styles.glassCard} style={{ gridColumn: '1 / -1' }}>
-          <div className={styles.header} style={{ marginBottom: '1.5rem' }}>
-            <h2>Active Senders</h2>
-            <button className={styles.unsubscribeBtn} style={{ background: 'transparent', border: 'none' }}>
+          <div className={styles.header} style={{ marginBottom: '1.25rem' }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, letterSpacing: '-0.02em' }}>Active Senders</h2>
+            <button className={styles.showcaseLinkBtn} style={{ padding: '0.35rem 0.8rem', fontSize: '0.75rem' }}>
               View All
             </button>
           </div>
 
           <div className={styles.senderList}>
-            {loading ? <p>Loading senders...</p> : uniqueSenders.length === 0 ? <p>No recent senders found.</p> : null}
+            {loading ? (
+              <p style={{ color: '#71717a', fontSize: '0.875rem' }}>Loading senders...</p>
+            ) : uniqueSenders.length === 0 ? (
+              <p style={{ color: '#71717a', fontSize: '0.875rem' }}>No recent senders found.</p>
+            ) : null}
             {uniqueSenders.map((sender, idx) => (
               <div key={idx} className={styles.senderItem}>
                 <div className={styles.senderInfo}>
-                  <div className={styles.avatar}>{sender.from?.name?.charAt(0) || sender.from?.email?.charAt(0) || '?'}</div>
-                  <div>
-                    <div className={styles.senderName}>{sender.from?.name}</div>
+                  <div className={styles.avatar} style={{ width: '36px', height: '36px', fontSize: '0.85rem' }}>
+                    {sender.from?.name?.charAt(0) || sender.from?.email?.charAt(0) || '?'}
+                  </div>
+                  <div className={styles.senderNameGroup}>
+                    <div className={styles.senderName}>{sender.from?.name || 'Unknown Sender'}</div>
                     <div className={styles.senderEmail}>{sender.from?.email}</div>
                   </div>
                 </div>
                 {unsubscribedSenders.has(sender.from?.email) ? (
-                  <button className={styles.unsubscribeBtn} style={{ background: '#4ade80', borderColor: '#4ade80', color: '#000', pointerEvents: 'none' }}>
+                  <button
+                    className={styles.unsubscribeBtn}
+                    style={{ background: 'rgba(74, 222, 128, 0.12)', borderColor: 'rgba(74, 222, 128, 0.3)', color: '#4ade80', pointerEvents: 'none' }}
+                  >
                     Unsubscribed ✓
                   </button>
                 ) : (
-                  <button className={styles.unsubscribeBtn} onClick={() => handleUnsubscribe(sender.from?.email, sender.unsubscribeLink)}>
+                  <button
+                    className={styles.unsubscribeBtn}
+                    onClick={() => handleUnsubscribe(sender.from?.email, sender.unsubscribeLink)}
+                  >
                     Unsubscribe
                   </button>
                 )}

@@ -16,7 +16,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Fishbowl | Gmail Automation",
+  title: "FisherBowl | AI Gmail Automation",
   description: "Intelligent Gmail cleanup and automation dashboard.",
 };
 

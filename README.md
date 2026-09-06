@@ -1,6 +1,6 @@
-# Fishbowl - AI Gmail Assistant
+# FisherBowl - AI Gmail Assistant
 
-Fishbowl is an intelligent, automated Gmail Assistant built with Next.js, Google Cloud (Gmail API), and Google DeepMind's Gemini API. It actively scans your inbox, classifies emails using advanced AI, and organizes them based on highly personalized rules. It features a beautiful dashboard and a fully automated daily cron job that runs in the background.
+FisherBowl is an intelligent, automated Gmail Assistant built with Next.js, Google Cloud (Gmail API), and Google DeepMind's Gemini API. It actively scans your inbox, classifies emails using advanced AI, and organizes them based on highly personalized rules. It features a beautiful dashboard and a fully automated daily cron job that runs in the background.
 
 ## Features
 - **AI Classification**: Uses `gemini-3.5-flash-lite` to rapidly classify incoming emails into `JUNK`, `IMPORTANT`, `REVIEW`, and `QUEUE`.
