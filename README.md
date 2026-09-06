@@ -37,7 +37,7 @@ This repository contains **highly personalized classification rules** tailored s
    - **Crucial**: Under "Publishing status", click **Publish App** to push it to "In production". If you leave it in "Testing", your refresh tokens will expire every 7 days!
 5. Go to **Credentials** -> **Create Credentials** -> **OAuth client ID**:
    - Application type: Web application
-   - Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google` (and your production URL).
+   - Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google` and `https://fisherbowl.vercel.app/api/auth/callback/google`.
 6. Copy your `Client ID` and `Client Secret`.
 
 ### 2. Gemini API

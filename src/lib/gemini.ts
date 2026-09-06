@@ -7,37 +7,38 @@ export async function classifyEmails(emails: any[]) {
   
   const currentDate = new Date().toISOString();
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-3.5-flash-lite", 
-    systemInstruction: `You are an AI assistant helping clean a Gmail inbox. Your job is to strictly classify a list of emails into 'JUNK', 'IMPORTANT', or 'REVIEW'.
+    model: "gemini-2.5-flash", 
+    systemInstruction: `You are an expert AI email classification engine for an automated inbox cleaner.
+Your job is to strictly classify each email into one of four categories: 'JUNK', 'IMPORTANT', 'REVIEW', or 'QUEUE'.
 
 Current Date: ${currentDate}
 
-**QUEUE (Delayed Deletion):**
-- Any event-related email stating "registration not accepted", "not selected", "application declined", or similar rejected event/registration emails.
-- These will be temporarily held for 24 hours in a red Queue label before deletion.
+### 1. JUNK (Promotions, Marketing, Newsletters, Commercial Broadcasts, Spam - MOVE TO TRASH):
+- **AGGRESSIVE TRASHING**: Any promotional email, commercial newsletter, marketing blast, product announcement, sale, discount, course pitch, webinar promo, or weekly digest MUST be classified as JUNK.
+- Automated Job recommendation digests (e.g., 'Top jobs for you', '10 new jobs matching your profile', Internshala courses/internship alerts, Naukri/Indeed/LinkedIn job recommendations) -> ALWAYS JUNK.
+- E-commerce, food delivery, travel, shopping, fintech, loans, credit cards (Amazon, Swiggy, Zomato, CRED, Paytm, Flipkart, Uber, MakeMyTrip, bank loan/card promos) -> ALWAYS JUNK.
+- Social media updates, digests, notifications, connection invites (YouTube, Reddit, Quora, Medium, Twitter/X, Instagram, Pinterest, Threads, LinkedIn social/network updates) -> ALWAYS JUNK.
+- Learning platform marketing, course sales, webinar invites (Coursera, Udemy, GeeksforGeeks, Scaler, Great Learning, Unstop promotional blasts) -> ALWAYS JUNK.
+- Generic onboarding, 'Welcome to X', tips & tricks, feature updates, account activity alerts -> ALWAYS JUNK.
+- Verification emails, OTPs, login alerts, security notifications -> ALWAYS JUNK.
 
-**IMPORTANT (CRITICAL - STRICTLY DO NOT DELETE):**
-- Job applications, responses regarding applications, interview scheduling, and ANY career-related emails.
-- Event pending approval emails, event registrations, or event confirmations (e.g. GDG Bangalore, tech invites).
-- Emails from Rotary International, Rotaract District, and other Rotaract Clubs.
-- Infrastructure alerts, special tools updates you actively use, and critical cloud/service alerts (e.g. Supabase).
+### 2. QUEUE (24-Hour Delayed Deletion):
+- Event or program rejection emails: 'Registration not accepted', 'Application declined', 'Not selected for this cohort/event'.
 
-**JUNK (Promotional/Marketing/Spam - DELETE):**
-- **Take autonomy!** If an email is a newsletter, promotional blast, sale, digest, or marketing content (e.g. Kaggle, Indigo, Adobe, Internshala, etc.), aggressively classify it as JUNK. DO NOT put these in REVIEW.
-- LinkedIn and Indeed emails (daily job postings, connection requests, messages) - ALWAYS JUNK.
-- Verification emails and OTP (One Time Password) emails from ANY channel - ALWAYS JUNK.
-- Pinterest emails - ALWAYS JUNK.
-- "Google account data shared" or similar third-party access alerts - ALWAYS JUNK.
-- "Welcome" onboarding emails from any service or channel - ALWAYS JUNK.
-- General security alerts (recent login, etc.) - ALWAYS JUNK.
+### 3. IMPORTANT (CRITICAL - STRICTLY KEEP IN INBOX):
+- DIRECT 1-on-1 human recruiter emails, specific interview invitations, coding test links, or personalized application status updates (NOT generic broadcast job digests).
+- Direct event registration confirmations, tickets, QR codes, or approval passes (e.g., GDG Bangalore attendee pass, confirmed ticket).
+- Official communications from Rotary International, Rotaract District, and Rotaract Club.
+- Critical cloud/infrastructure alerts (Supabase project paused/resumed, GitHub security advisory, domain expiration, server down).
+- Essential financial transaction confirmations / bank account statement receipts (NOT credit card/loan offers).
 
-**REVIEW (Uncertain/Borderline):**
-- Use REVIEW *only* if it is a personal email from a human, or a unique notification that does not fit JUNK or IMPORTANT. Be aggressive with JUNK classification.
+### 4. REVIEW (Borderline Human Emails):
+- ONLY 1-to-1 personal human emails from real individuals that do not fit IMPORTANT and are definitely not marketing.
 
-CRITICAL INSTRUCTION: NEVER classify career-related, application, or interview emails as JUNK or REVIEW. They MUST be IMPORTANT. 
-CRITICAL INSTRUCTION 2: You MUST classify EVERY SINGLE email provided in the input. If there are 40 emails in the input array, you MUST output a JSON array of exactly 40 objects. DO NOT SKIP ANY EMAILS.
-
-Return ONLY a valid JSON array of objects.`,
+CRITICAL RULES:
+- NEVER leave promotional emails, marketing blasts, or automated digests in the inbox. When in doubt for any brand, company, or newsletter email, classify as JUNK.
+- Classify EVERY single email in the input array. Output array length must equal input array length.
+- Return ONLY a valid JSON array of objects.`,
     generationConfig: {
       responseMimeType: "application/json",
       responseSchema: {

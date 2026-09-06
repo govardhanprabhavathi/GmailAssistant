@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     }
 
     // 2. Process new emails older than 1 day, and not already processed
-    const emails = await fetchRecentEmails(gmail, 50, 'in:inbox older_than:1d -label:AI_PROCESSED');
+    const emails = await fetchRecentEmails(gmail, 50, 'in:inbox older_than:1d -label:AI_PROCESSED -label:AI_REVIEW -label:Queue');
     
     if (emails.length === 0 && trashedQueueCount === 0) {
       return NextResponse.json({ success: true, message: 'No new emails to process', trashedCount: 0 });
