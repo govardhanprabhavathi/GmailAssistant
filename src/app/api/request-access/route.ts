@@ -28,16 +28,19 @@ export async function POST(req: Request) {
         const gmail = getGmailClientFromRefreshToken(refreshToken);
         const adminEmail = 'govardhanpravathi@gmail.com';
         const subject = `[FisherBowl Access Request] New Request from ${name}`;
-        const bodyText = `Hello Govardhan,\n\nYou have received a new access request for FisherBowl:\n\nName: ${name}\nEmail: ${email}\nReason / Note: ${note || 'None provided'}\n\nTimestamp: ${new Date().toLocaleString()}\n\nTo grant them access, add their email (${email}) to your Google Cloud Console OAuth Test Users list (or allow their account directly).\n\nBest,\nFisherBowl Automation System`;
+        const bodyText = `Hello Govardhan,\n\nYou have received a new whitelist access request for FisherBowl:\n\n👤 Name: ${name}\n📧 Email: ${email}\n📝 Reason / Note: ${note || 'None provided'}\n⏰ Time: ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })} IST\n\n----------------------------------------\nHow to Grant Access:\n1. Go to Google Cloud Console > APIs & Services > OAuth consent screen > Audience / Test users (or your user permissions).\n2. Add ${email} so they can authenticate and use FisherBowl.\n----------------------------------------\n\nBest,\nFisherBowl Automation System`;
 
         const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
         const messageParts = [
           `To: ${adminEmail}`,
           `Subject: ${utf8Subject}`,
+          'MIME-Version: 1.0',
           'Content-Type: text/plain; charset=utf-8',
           '',
           bodyText,
         ];
+
+        console.log(`[FisherBowl] Access request received from ${name} (${email}). Sending notification to ${adminEmail}...`);
 
         const rawMessage = Buffer.from(messageParts.join('\n'))
           .toString('base64')
