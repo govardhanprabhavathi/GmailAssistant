@@ -54,16 +54,16 @@ body::after {
   position: fixed;
   top: -10%;
   left: -20%;
-  width: 60vw;
-  height: 60vw;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 65%);
+  width: 70vw;
+  height: 70vw;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
   filter: blur(120px);
   z-index: -1;
   border-radius: 50%;
   pointer-events: none;
 }
 
-/* Bottom Subtle Gradient Flow */
+/* Bottom & Ambient Dynamic Blue Gradient Flow */
 .glow-container {
   position: fixed;
   top: 0;
@@ -75,51 +75,128 @@ body::after {
   pointer-events: none;
 }
 
+/* Base class for the flowing orbs */
 .glow-orb {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.25;
-  filter: blur(120px);
-  animation: waveFlow 25s infinite alternate ease-in-out;
+  pointer-events: none;
+  will-change: transform, opacity, filter;
 }
 
-/* Orb 1: Subtle Deep Blue */
+/* Orb 1: Vibrant Electric Blue (Bottom-Left to Center Wave) */
 .orb-1 {
-  width: 100vw;
-  height: 35vh;
-  background: radial-gradient(circle, rgba(30, 58, 138, 0.4) 0%, transparent 70%);
+  width: 110vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.7) 0%, rgba(37, 99, 235, 0.45) 45%, transparent 75%);
   bottom: -15vh;
-  left: -15vw;
+  left: -20vw;
+  filter: blur(80px);
+  animation: waveFlow1 22s infinite alternate ease-in-out, colorPulse 14s infinite alternate ease-in-out;
 }
 
-/* Orb 2: Soft Navy */
+/* Orb 2: Deep Indigo & Sapphire (Bottom-Right Wave) */
 .orb-2 {
-  width: 90vw;
-  height: 35vh;
-  background: radial-gradient(circle, rgba(15, 23, 42, 0.6) 0%, transparent 70%);
+  width: 95vw;
+  height: 65vh;
+  background: radial-gradient(circle, rgba(29, 78, 216, 0.75) 0%, rgba(30, 58, 138, 0.5) 50%, transparent 80%);
   bottom: -20vh;
-  right: -10vw;
-  animation-delay: -5s;
+  right: -15vw;
+  filter: blur(85px);
+  animation: waveFlow2 26s infinite alternate ease-in-out, colorPulse 16s infinite alternate ease-in-out;
+  animation-delay: -4s, -2s;
 }
 
-/* Orb 3: Very Subtle Accent */
+/* Orb 3: Luminous Sky Blue & Cyan (Lower-Middle Sweep) */
 .orb-3 {
   width: 80vw;
-  height: 30vh;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
-  bottom: -10vh;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.6) 0%, rgba(96, 165, 250, 0.35) 45%, transparent 75%);
+  bottom: -5vh;
   left: 10vw;
-  animation-delay: -10s;
+  filter: blur(75px);
+  animation: waveFlow3 18s infinite alternate ease-in-out, colorPulse 10s infinite alternate ease-in-out;
+  animation-delay: -9s, -5s;
 }
 
-@keyframes waveFlow {
+/* Orb 4: Atmospheric Top-Right Azure Ambient Accent */
+.orb-4 {
+  width: 65vw;
+  height: 55vh;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(59, 130, 246, 0.25) 50%, transparent 75%);
+  top: -15vh;
+  right: -10vw;
+  filter: blur(95px);
+  animation: waveFlow4 24s infinite alternate ease-in-out;
+  animation-delay: -6s;
+}
+
+/* Movement Animations: Moves, rotates and organically expands the waves */
+@keyframes waveFlow1 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(12vw, -12vh) scale(1.15) rotate(15deg);
+  }
+  66% {
+    transform: translate(-8vw, -22vh) scale(0.95) rotate(-10deg);
+  }
+  100% {
+    transform: translate(15vw, -8vh) scale(1.1) rotate(8deg);
+  }
+}
+
+@keyframes waveFlow2 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(-14vw, -18vh) scale(1.1) rotate(-12deg);
+  }
+  66% {
+    transform: translate(10vw, -10vh) scale(0.9) rotate(15deg);
+  }
+  100% {
+    transform: translate(-18vw, -25vh) scale(1.2) rotate(-8deg);
+  }
+}
+
+@keyframes waveFlow3 {
   0% {
     transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(5vw, -10vh) scale(1.05);
+    transform: translate(-10vw, -15vh) scale(1.2) rotate(20deg);
   }
   100% {
-    transform: translate(-5vw, -5vh) scale(0.95);
+    transform: translate(12vw, -25vh) scale(0.85) rotate(-15deg);
+  }
+}
+
+@keyframes waveFlow4 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-15vw, 15vh) scale(1.15);
+  }
+  100% {
+    transform: translate(8vw, 20vh) scale(0.95);
+  }
+}
+
+/* Color & Glow Pulse: Gently shifts luminance, hue and blur spread */
+@keyframes colorPulse {
+  0% {
+    opacity: 0.7;
+    filter: blur(85px) brightness(0.95) hue-rotate(-10deg);
+  }
+  50% {
+    opacity: 0.9;
+    filter: blur(70px) brightness(1.25) hue-rotate(15deg);
+  }
+  100% {
+    opacity: 0.75;
+    filter: blur(85px) brightness(1.05) hue-rotate(0deg);
   }
 }

@@ -226,11 +226,11 @@
 
 /* Trigger Action Card */
 .triggerCard {
-  background: linear-gradient(180deg, rgba(30, 58, 138, 0.2) 0%, rgba(15, 23, 42, 0.5) 100%);
-  border-top: 1px solid rgba(59, 130, 246, 0.3);
-  border-left: 1px solid rgba(59, 130, 246, 0.1);
-  border-right: 1px solid rgba(59, 130, 246, 0.1);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.04);
+  background: radial-gradient(ellipse at top, rgba(30, 58, 138, 0.3) 0%, rgba(15, 23, 42, 0.7) 100%);
+  border-top: 1px solid rgba(59, 130, 246, 0.4);
+  border-left: 1px solid rgba(59, 130, 246, 0.15);
+  border-right: 1px solid rgba(59, 130, 246, 0.15);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.06);
   text-align: center;
   display: flex;
   flex-direction: column;

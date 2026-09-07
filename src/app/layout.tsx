@@ -32,6 +32,7 @@ export default function RootLayout({
           <div className="glow-orb orb-1"></div>
           <div className="glow-orb orb-2"></div>
           <div className="glow-orb orb-3"></div>
+          <div className="glow-orb orb-4"></div>
         </div>
         <Providers>{children}</Providers>
       </body>
